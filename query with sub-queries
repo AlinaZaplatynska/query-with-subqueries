@@ -1,0 +1,34 @@
+ --1.1--
+select  Max(SalesLT.SalesOrderHeader.TotalDue) as MAX_TotalDue
+from SalesLT.SalesOrderHeader
+            --1.2--
+select SalesLT.SalesOrderHeader.TotalDue as MAX_TotalDue
+from SalesLT.SalesOrderHeader
+where SalesLT.SalesOrderHeader.TotalDue IN -- Будуть видані записи в яких TotalDue буде дорівнювати TotalDue в підзапиті
+    (Select Max(SalesLT.SalesOrderHeader.TotalDue) -- Підзапит повертає записи з максимальним значенням TotalDue
+     from SalesLT.SalesOrderHeader)
+
+             --2.1--
+select SalesLT.SalesOrderDetail.OrderQty
+from SalesLT.SalesOrderDetail
+where SalesLT.SalesOrderDetail.OrderQty < 20
+
+             --2.2--
+select SalesLT.SalesOrderDetail.OrderQty
+from SalesLT.SalesOrderDetail
+where SalesLT.SalesOrderDetail.OrderQty IN 
+    (Select SalesLT.SalesOrderDetail.OrderQty
+     from SalesLT.SalesOrderDetail
+     Where SalesLT.SalesOrderDetail.OrderQty < 20)
+
+           --3--
+select SalesLT.Address.City, Year(SalesLT.SalesOrderHeader.OrderDate) as Year, Month(SalesLT.SalesOrderHeader.OrderDate) as Month, SalesLT.SalesOrderHeader.TotalDue
+from SalesLT.SalesOrderHeader inner join SalesLT.Address on SalesLT.SalesOrderHeader.ShipToAddressID = SalesLT.Address.AddressID
+
+             --4--
+select SalesLT.SalesOrderHeader.ShipMethod as Service, SalesLT.SalesOrderHeader.SalesOrderID as Order#, SalesLT.SalesOrderHeader.OrderDate, SalesLT.SalesOrderHeader.TotalDue
+from SalesLT.SalesOrderHeader
+
+
+
+
